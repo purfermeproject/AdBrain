@@ -115,8 +115,13 @@ Without a database configured, the app still runs in **demo mode** (shows the PF
 
 Set `AI_PROVIDER=gemini` (or `openai`) with the matching API key in `.env.local` once you're ready to wire up an intelligence agent — see `lib/ai.ts` and [AI Prompts](docs/05-AI-PROMPTS.md).
 
+### Connecting Meta Ads
+
+Requires a Meta developer app (App ID + App Secret) with the Marketing API product added. In `.env.local`, set `META_APP_ID`, `META_APP_SECRET`, `META_REDIRECT_URI` (must match the app's configured OAuth redirect), and `META_TOKEN_ENCRYPTION_KEY` (any long random string, e.g. `openssl rand -hex 32` — used to encrypt stored access tokens). Then go to **Settings → Connections** in the app and click **Connect Meta Ads**. AdBrain only ever requests the `ads_read` scope — see [Human Approval Gate](docs/06-MEMORY-AND-APPROVAL.md).
+
 ## Status
 
-Phase 0 (Foundation) of the [roadmap](docs/08-ROADMAP.md#v1-step-by-step-development-plan) is built: the Next.js app scaffold, the pg pool (`lib/db.ts`), the provider-abstracted AI client with structured-output validation/retry (`lib/ai.ts`), workspace resolution with a demo fallback (`lib/workspace.ts`), the `/api/health` endpoint, and the full V1 Postgres schema + seed (`postgres/`). Verified locally: `npm install`, `next build`, and `next start` all succeed, and both `/` and `/api/health` render correctly in demo mode.
+- **Phase 0 (Foundation)** — done. Next.js app scaffold, the pg pool (`lib/db.ts`), the provider-abstracted AI client with structured-output validation/retry (`lib/ai.ts`), workspace resolution with a demo fallback (`lib/workspace.ts`), `/api/health`, and the full V1 Postgres schema + seed (`postgres/`).
+- **Phase 1 (Meta Ads ingestion)** — code complete, verified against a real Postgres instance with realistic fixture data (normalize → upsert pipeline confirmed idempotent, all computed metrics hand-checked), but **not yet exercised against the live Meta API** — that requires a real Meta developer app and ad account credentials this environment doesn't have. Built: OAuth flow (`/api/meta/oauth/start` + `/callback`, `ads_read` only), the Graph API client (`lib/meta/client.ts`, paginated fetchers + async Insights API for backfill), normalizers (`lib/meta/normalize.ts`), sync orchestration (`lib/meta/sync.ts`), manual backfill and cron-target incremental sync routes, encrypted token storage (`lib/crypto.ts`), and the Settings → Connections UI.
 
-Meta Ads ingestion (Phase 1) is next.
+Performance Intelligence (Phase 2) is next.
