@@ -62,6 +62,61 @@ Connect Meta Ads → import campaign/ad/creative performance → analyze 7/14/30
 - **Jobs/scheduling:** Cron-triggered API routes (Vercel Cron / node-cron) for MVP; upgrade to a queue (BullMQ/Trigger.dev) in V2 when multi-platform ingestion needs concurrency control
 - **Meta integration:** Meta Marketing API (Graph API) via server-side OAuth app
 
+## Local setup
+
+```powershell
+npm install
+```
+
+Copy `.env.example` to `.env.local` and set your local PostgreSQL password (Gemini/Meta/Creative OS keys can stay blank for now — the app runs in demo mode without them):
+
+```env
+DB_HOST=127.0.0.1
+DB_PORT=5432
+DB_NAME=adbrain_db
+DB_USER=postgres
+DB_PASSWORD=YOUR_LOCAL_POSTGRES_PASSWORD
+DB_SSL=false
+```
+
+Create the `adbrain_db` database, then run the schema and seed against it (psql, pgAdmin, or any Postgres client):
+
+```
+postgres/schema.sql   -- full V1 schema (docs/03-DATA-MODEL.md §3.2)
+postgres/seed.sql      -- seeds the PF / PF-COOKIE-BRK workspace/brand/product,
+                          matching Creative OS's ids
+```
+
+Run it:
+
+```powershell
+npm run dev
+```
+
+Open:
+- App: http://localhost:3000
+- Health: http://localhost:3000/api/health
+
+A healthy setup with the database connected should report:
+
+```json
+{
+  "status": "ok",
+  "aiProvider": "demo",
+  "geminiConfigured": false,
+  "openaiConfigured": false,
+  "databaseConfigured": true,
+  "databaseOk": true,
+  "databaseError": null
+}
+```
+
+Without a database configured, the app still runs in **demo mode** (shows the PF / PF-COOKIE-BRK demo workspace and the build-roadmap status view) so you can confirm the app boots before setting up Postgres.
+
+Set `AI_PROVIDER=gemini` (or `openai`) with the matching API key in `.env.local` once you're ready to wire up an intelligence agent — see `lib/ai.ts` and [AI Prompts](docs/05-AI-PROMPTS.md).
+
 ## Status
 
-This repository currently contains design documentation only, per the project's explicit instruction to define architecture, data model, logic, and workflows before implementation begins. Implementation starts at [Roadmap → V1](docs/08-ROADMAP.md#v1-step-by-step-development-plan).
+Phase 0 (Foundation) of the [roadmap](docs/08-ROADMAP.md#v1-step-by-step-development-plan) is built: the Next.js app scaffold, the pg pool (`lib/db.ts`), the provider-abstracted AI client with structured-output validation/retry (`lib/ai.ts`), workspace resolution with a demo fallback (`lib/workspace.ts`), the `/api/health` endpoint, and the full V1 Postgres schema + seed (`postgres/`). Verified locally: `npm install`, `next build`, and `next start` all succeed, and both `/` and `/api/health` render correctly in demo mode.
+
+Meta Ads ingestion (Phase 1) is next.
