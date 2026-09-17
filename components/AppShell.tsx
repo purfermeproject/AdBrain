@@ -10,7 +10,7 @@ const NAV_ITEMS = [
   { key: "hypotheses", label: "Hypotheses", href: "/hypotheses", live: false },
   { key: "experiments", label: "Experiments", href: "/experiments", live: false },
   { key: "reports", label: "Reports", href: "/reports", live: false },
-  { key: "settings", label: "Settings", href: "/settings", live: false },
+  { key: "settings", label: "Settings", href: "/settings/connections", live: true },
 ];
 
 export function AppShell({ active, children }: { active: string; children: React.ReactNode }) {

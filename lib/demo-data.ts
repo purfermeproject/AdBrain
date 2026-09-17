@@ -25,7 +25,7 @@ export type ModuleSummary = {
 // Mirrors the phase order in docs/08-ROADMAP.md so the home screen always
 // reflects what's actually built, not what's aspirational.
 export const initialModules: ModuleSummary[] = [
-  { key: "connections", title: "Meta Ads Connection", description: "OAuth + campaign/ad/creative + insights import", status: "not_started" },
+  { key: "connections", title: "Meta Ads Connection", description: "OAuth + campaign/ad/creative + insights import", status: "in_progress" },
   { key: "performance", title: "Performance Intelligence", description: "Anomaly detection, cause discrimination, diagnoses", status: "not_started" },
   { key: "creative", title: "Creative Intelligence", description: "Classification, winner/fatigue detection", status: "not_started" },
   { key: "recommendations", title: "Recommendation Engine", description: "Problem / Evidence / Cause / Action / Confidence", status: "not_started" },

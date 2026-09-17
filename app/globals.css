@@ -53,5 +53,11 @@ h2 { font-family: Georgia, serif; font-size: 22px; }
 .alert.warn { background: var(--amber); border: 1px solid #f0dfae; }
 .alert.ok { background: var(--green); border: 1px solid #cbe6d2; }
 .codeLike { background: #fbf8fc; border: 1px solid var(--line); border-radius: 10px; padding: 12px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; white-space: pre-wrap; }
+.btn { display: inline-flex; align-items: center; border: 0; border-radius: 10px; padding: 9px 13px; cursor: pointer; font-weight: 750; font-size: 13px; }
+.btn:disabled { opacity: .5; cursor: not-allowed; }
+.btnPrimary { background: var(--plum); color: white; }
+.btnGhost { background: #f2eef3; color: var(--plum); }
+.connectionRow { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 14px; background: white; border: 1px solid var(--line); border-radius: 14px; padding: 14px 16px; }
+.connectionMeta { color: var(--muted); font-size: 13px; margin-top: 3px; }
 
 @media (max-width: 900px) { .shell { display: block; } .sidebar { height: auto; position: relative; } .sidebarFoot { display: none; } .main { padding: 20px; } .grid2, .grid3 { grid-template-columns: 1fr; } }
