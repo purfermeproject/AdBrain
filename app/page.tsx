@@ -2,6 +2,11 @@ import { AppShell } from "@/components/AppShell";
 import { getWorkspace } from "@/lib/workspace";
 import { configuredProvider } from "@/lib/ai";
 
+// This reads live DB/env state on every request (connection status, module
+// state) — it must never be statically prerendered at build time, or it
+// would permanently bake in whatever env was set during `next build`.
+export const dynamic = "force-dynamic";
+
 export default async function Home() {
   const ws = await getWorkspace();
   const provider = configuredProvider();
